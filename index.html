@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>家庭親屬通 v1.0｜Kinship Learning Lab</title>
+<meta name="theme-color" content="#fff8ef" />
+<style>
+:root{
+  --bg:#f7f4ed;--card:#fffdf8;--ink:#25313b;--muted:#65727c;--line:#d9d4c8;
+  --blue:#318aa8;--blue2:#e8f5f8;--green:#4b9170;--green2:#ebf6ef;
+  --orange:#d8813f;--orange2:#fff1e5;--purple:#9c638f;--purple2:#f6edf4;
+  --red:#c95757;--red2:#fdecec;--yellow:#d4a62b;--yellow2:#fff8da;
+  --shadow:0 3px 0 rgba(45,54,62,.08),0 10px 24px rgba(45,54,62,.06);
+}
+[data-theme="dark"]{
+  --bg:#172027;--card:#212c34;--ink:#eef4f7;--muted:#b8c3ca;--line:#3d4a53;
+  --blue:#63bfdc;--blue2:#203c47;--green:#72c399;--green2:#203b31;
+  --orange:#efaa70;--orange2:#473326;--purple:#d59ac7;--purple2:#40313d;
+  --red:#ef8585;--red2:#472c2e;--yellow:#e9c95e;--yellow2:#413b26;
+  --shadow:0 3px 0 rgba(0,0,0,.18),0 10px 24px rgba(0,0,0,.18);
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.65}
+button,input,select{font:inherit;color:inherit}.app{max-width:1180px;margin:auto;padding:18px 18px 80px}
+.topbar{position:sticky;top:0;z-index:20;margin:0 -18px 18px;padding:12px 18px;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1180px;margin:auto;display:flex;align-items:center;gap:12px}.brand{display:flex;align-items:center;gap:10px;min-width:0}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,var(--blue),var(--green));display:grid;place-items:center;color:white;font-size:22px;box-shadow:var(--shadow)}
+.brand h1{font-size:clamp(18px,2.4vw,26px);line-height:1.2;margin:0}.brand small{display:block;color:var(--muted);font-weight:600;margin-top:3px}.top-actions{margin-left:auto;display:flex;gap:8px}.iconbtn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:8px 11px;cursor:pointer;box-shadow:0 2px 0 rgba(0,0,0,.04)}
+.hero{display:grid;grid-template-columns:1.35fr .65fr;gap:16px;margin-bottom:18px}.hero-main,.hero-side{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}.hero-main{padding:24px}.hero-main h2{font-size:clamp(26px,4vw,42px);line-height:1.22;margin:0 0 8px}.hero-main p{margin:0;color:var(--muted);font-size:16px}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.chip{padding:6px 10px;border-radius:999px;font-weight:800;font-size:13px;background:var(--blue2);color:var(--blue);border:1px solid color-mix(in srgb,var(--blue) 28%,transparent)}.hero-side{padding:18px}.hero-side h3{margin:0 0 10px}.route{display:grid;gap:9px}.route div{display:flex;gap:10px;align-items:flex-start;padding:10px;border-radius:14px;background:color-mix(in srgb,var(--bg) 65%,var(--card))}.route b{min-width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff}.route span{font-size:14px}.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:3px;margin:8px 0 18px;scrollbar-width:thin}.tab{white-space:nowrap;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer}.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.panel{display:none}.panel.active{display:block}.section-title{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:8px 2px 14px}.section-title h2{margin:0;font-size:25px}.section-title p{margin:0;color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:17px;box-shadow:var(--shadow)}.card h3{margin:0 0 8px}.card p{margin:5px 0;color:var(--muted)}.accent-blue{border-top:5px solid var(--blue)}.accent-green{border-top:5px solid var(--green)}.accent-orange{border-top:5px solid var(--orange)}.accent-purple{border-top:5px solid var(--purple)}.key{font-weight:900;color:var(--ink);background:var(--yellow2);padding:0 4px;border-radius:5px}.mini{font-size:13px;color:var(--muted)}
+.logic{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}.logic .step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;position:relative}.logic .step:not(:last-child)::after{content:"→";position:absolute;right:-14px;top:50%;transform:translateY(-50%);font-weight:900;color:var(--muted);z-index:2}.numb{display:inline-grid;place-items:center;width:27px;height:27px;border-radius:50%;background:var(--blue);color:#fff;font-weight:900;margin-right:6px}
+ .tree-card{overflow:hidden;max-width:100%}.tree-scroll{overflow-x:auto;overflow-y:hidden;padding:8px 4px 14px;scrollbar-width:thin;overscroll-behavior-x:contain}.tree-scroll-hint{display:none;color:var(--muted);font-size:12px;margin:0 0 8px}.tree-scale-box{position:relative;margin:0 auto}.family-tree{position:relative;width:1640px;height:640px;margin:0;background:color-mix(in srgb,var(--bg) 34%,var(--card));border:1px solid var(--line);border-radius:18px;overflow:hidden;transform-origin:top left}.family-tree svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.family-tree .branch{stroke:color-mix(in srgb,var(--muted) 72%,transparent);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}.family-tree .marriage{stroke:var(--purple);stroke-width:3;fill:none;stroke-linecap:round}.family-tree .person{position:absolute;width:128px;min-height:76px;text-align:center;padding:9px 7px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;transition:.15s;box-shadow:0 2px 0 rgba(0,0,0,.04)}.family-tree .person:hover{transform:translateY(-2px);z-index:4}.person .relation{display:block;font-weight:900;font-size:16px}.person .tag{display:block;font-size:11px;color:var(--muted);margin-top:2px}.person.focus{border-color:var(--orange);background:var(--orange2)}.person.direct{border-color:var(--green)}.person.collateral{border-color:var(--blue)}.person.affinal{border-color:var(--purple)}.tree-group-label{position:absolute;font-size:12px;font-weight:900;color:var(--muted);padding:3px 8px;border-radius:999px;background:var(--card);border:1px solid var(--line)}.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}.legend span{display:inline-flex;align-items:center;gap:5px;font-size:13px}.dot{width:11px;height:11px;border-radius:3px;background:var(--line)}.dot.direct{background:var(--green)}.dot.collateral{background:var(--blue)}.dot.affinal{background:var(--purple)}.feedback{margin-top:12px;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--bg) 60%,var(--card));min-height:55px}.feedback.good{background:var(--green2);border-color:var(--green)}.feedback.bad{background:var(--red2);border-color:var(--red)}
+.tree-help-btn{display:inline-flex;align-items:center;gap:6px}.modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(8,13,17,.72);backdrop-filter:blur(4px)}.modal.open{display:flex}.modal-box{width:min(96vw,1460px);max-height:92vh;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:0 22px 80px rgba(0,0,0,.35);display:flex;flex-direction:column}.modal-head{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}.modal-head h3{margin:0;font-size:20px}.modal-head p{margin:0;color:var(--muted);font-size:13px}.modal-close{margin-left:auto;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:8px 11px;cursor:pointer;font-weight:900}.modal-body{padding:14px;overflow:auto}.modal .family-tree{margin:0 auto}.modal-feedback{margin-top:10px}
+
+.family-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.family-card{border-radius:18px;padding:17px;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow)}.family-card .emoji{font-size:32px}.family-card h3{margin:6px 0}.family-card ul{margin:8px 0 0;padding-left:20px;color:var(--muted)}.family-card strong{color:var(--ink)}
+.quiz-wrap{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:16px}.quiz-main{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}.qmeta{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:13px}.question{font-size:22px;font-weight:900;margin:14px 0 16px}.options{display:grid;gap:9px}.option{width:100%;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:12px 14px;border-radius:14px;cursor:pointer;font-weight:700}.option:hover{border-color:var(--blue)}.option.correct{background:var(--green2);border-color:var(--green)}.option.wrong{background:var(--red2);border-color:var(--red)}.quiz-side{display:grid;gap:12px;align-content:start}.stat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;box-shadow:var(--shadow)}.stat .big{font-size:30px;font-weight:950}.progress{height:10px;background:color-mix(in srgb,var(--line) 65%,transparent);border-radius:999px;overflow:hidden;margin-top:7px}.progress>i{display:block;height:100%;width:0;background:var(--green);transition:.2s}.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.btn{border:0;border-radius:13px;padding:10px 14px;background:var(--blue);color:#fff;font-weight:900;cursor:pointer}.btn.secondary{background:var(--card);color:var(--ink);border:1px solid var(--line)}.btn.danger{background:var(--red)}
+.practice{display:grid;grid-template-columns:1fr 1fr;gap:14px}.practice .card{min-height:250px}.scenario{font-size:19px;font-weight:850;margin:8px 0 14px}.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.choice{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:11px;font-weight:800;cursor:pointer}.choice.selected{outline:3px solid color-mix(in srgb,var(--blue) 35%,transparent);border-color:var(--blue)}
+
+.trainer-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px}.trainer-main{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}.trainer-side{display:grid;gap:12px;align-content:start}.relation-path{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}.path-chip{padding:6px 10px;border-radius:999px;background:var(--blue2);color:var(--blue);font-weight:850;font-size:13px;border:1px solid color-mix(in srgb,var(--blue) 30%,transparent)}.trainer-step{border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px;background:color-mix(in srgb,var(--bg) 48%,var(--card))}.trainer-step.locked{opacity:.48}.trainer-step.done{border-color:var(--green);background:var(--green2)}.trainer-step h4{margin:0 0 8px}.step-options{display:flex;gap:8px;flex-wrap:wrap}.step-option{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:9px 12px;font-weight:800;cursor:pointer}.step-option:hover{border-color:var(--blue)}.step-option.ok{background:var(--green2);border-color:var(--green)}.step-option.no{background:var(--red2);border-color:var(--red)}.trainer-hint{font-size:13px;color:var(--muted);margin-top:8px}.trainer-result{margin-top:14px;padding:14px;border-radius:15px;background:var(--green2);border:1px solid var(--green)}.mini-rule{display:grid;gap:7px}.mini-rule div{padding:9px 10px;border-radius:12px;background:color-mix(in srgb,var(--bg) 62%,var(--card));font-size:13px}.trainer-progress{display:flex;justify-content:space-between;gap:10px;align-items:center;color:var(--muted);font-size:13px}
+.notice{padding:13px 15px;border-radius:14px;background:var(--yellow2);border:1px solid color-mix(in srgb,var(--yellow) 55%,transparent);margin:12px 0}.notice b{color:var(--ink)}
+.question-anchor{position:sticky;top:76px;z-index:8;margin:-4px 0 14px;padding:12px 14px;border:1px solid color-mix(in srgb,var(--blue) 48%,var(--line));border-left:5px solid var(--blue);border-radius:14px;background:color-mix(in srgb,var(--card) 94%,var(--blue2));box-shadow:0 5px 16px rgba(0,0,0,.08)}
+.question-anchor .qa-label{font-size:12px;font-weight:900;color:var(--blue);letter-spacing:.04em}.question-anchor .qa-text{font-size:18px;font-weight:900;line-height:1.45;margin-top:2px;color:var(--ink)}
+.mistake-badge{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 7px;border-radius:999px;background:var(--red);color:#fff;font-size:12px;font-weight:900;margin-left:6px}.mistake-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}.mistake-list{display:grid;gap:12px}.mistake-card{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--red);border-radius:16px;padding:15px;box-shadow:var(--shadow)}.mistake-card h3{margin:0 0 6px;font-size:18px}.mistake-card p{margin:5px 0;color:var(--muted)}.mistake-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted)}.mistake-count{font-weight:900;color:var(--red)}.review-empty{text-align:center;padding:34px 18px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:18px}.review-main{max-width:850px}.review-source{display:inline-block;padding:4px 9px;border-radius:999px;background:var(--purple2);color:var(--purple);font-size:12px;font-weight:900;margin-bottom:8px}
+@media(max-width:620px){.question-anchor{top:64px}.question-anchor .qa-text{font-size:16px}.tree-scroll-hint{display:block}.modal{padding:8px}.modal-body{padding:8px}}
+
+.footer{margin-top:22px;color:var(--muted);font-size:12px;text-align:center}.hidden{display:none!important}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.trainer-layout{grid-template-columns:1fr}.grid,.family-grid{grid-template-columns:1fr 1fr}.logic{grid-template-columns:1fr 1fr}.logic .step::after{display:none}.quiz-wrap{grid-template-columns:1fr}.quiz-side{grid-template-columns:1fr 1fr}.practice{grid-template-columns:1fr}}
+@media(max-width:620px){.app{padding:10px 10px 65px}.topbar{margin:0 -10px 12px;padding:9px 10px}.logo{width:38px;height:38px;border-radius:12px}.brand small{display:none}.hero-main{padding:18px}.grid,.family-grid{grid-template-columns:1fr}.logic{grid-template-columns:1fr}.quiz-side{grid-template-columns:1fr 1fr}.choice-grid{grid-template-columns:1fr}.section-title{align-items:flex-start;flex-direction:column}.top-actions .label{display:none}}
+
+/* ===== 三裝置正式版健檢：Desktop / iPad / iPhone ===== */
+html,body{max-width:100%;overflow-x:hidden}
+body{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.app{padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right));padding-bottom:max(80px,calc(64px + env(safe-area-inset-bottom)))}
+.topbar{padding-top:max(12px,env(safe-area-inset-top));}
+.topbar-inner,.brand,.brand>div:last-child{min-width:0}
+.brand h1{overflow:hidden;text-overflow:ellipsis}
+.tabs{-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;overscroll-behavior-x:contain}
+.tab{scroll-snap-align:start;min-height:44px}
+.iconbtn,.btn,.choice,.option,.step-option,.modal-close{min-height:44px}
+.tree-scroll{-webkit-overflow-scrolling:touch;scrollbar-gutter:stable both-edges}
+.tree-scroll.needs-scroll{cursor:grab}
+.tree-scroll.needs-scroll:active{cursor:grabbing}
+.tree-scroll-hint{padding:6px 9px;border-radius:10px;background:color-mix(in srgb,var(--blue2) 60%,transparent);border:1px solid color-mix(in srgb,var(--blue) 22%,transparent)}
+.modal-head{flex:0 0 auto;background:var(--card)}
+.modal-body{-webkit-overflow-scrolling:touch}
+
+/* 小型桌機與 iPad 橫向 */
+@media(max-width:1180px){
+  .app{max-width:100%}
+  .hero-main h2{font-size:clamp(28px,4vw,38px)}
+  .tree-card{padding-left:14px;padding-right:14px}
+}
+
+/* iPad 橫向 / 直向：避免雙欄太擠，保留可觸控尺寸 */
+@media(max-width:1024px){
+  .topbar-inner{max-width:100%}
+  .hero{grid-template-columns:1fr}
+  .hero-side .route{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hero-side .route div{height:100%}
+  .tabs{margin-left:-2px;margin-right:-2px;padding-left:2px;padding-right:2px}
+  .grid,.family-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .logic{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .logic .step::after{display:none}
+  .quiz-wrap,.trainer-layout{grid-template-columns:1fr}
+  .quiz-side,.trainer-side{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .practice{grid-template-columns:1fr}
+  .question-anchor{top:74px}
+  .modal-box{width:min(97vw,1460px);max-height:94dvh}
+}
+
+/* iPad 直向與大型手機 */
+@media(max-width:820px){
+  .app{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+  .topbar{margin-left:-14px;margin-right:-14px;padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+  .hero-side .route{grid-template-columns:1fr}
+  .section-title h2{font-size:23px}
+  .card,.family-card{padding:15px}
+  .quiz-main,.trainer-main{padding:17px}
+  .question{font-size:21px}
+  .modal-head p{max-width:62vw}
+  .tree-scroll-hint{display:block}
+}
+
+/* iPhone 直向 */
+@media(max-width:620px){
+  .app{padding:8px max(10px,env(safe-area-inset-right)) max(65px,calc(52px + env(safe-area-inset-bottom))) max(10px,env(safe-area-inset-left))}
+  .topbar{margin:0 -10px 10px;padding:8px max(10px,env(safe-area-inset-right)) 8px max(10px,env(safe-area-inset-left));padding-top:max(8px,env(safe-area-inset-top))}
+  .topbar-inner{gap:8px}
+  .brand{gap:8px;flex:1 1 auto}
+  .brand h1{font-size:17px;white-space:nowrap;max-width:58vw}
+  .brand small{display:none}
+  .logo{width:36px;height:36px;min-width:36px;border-radius:11px;font-size:19px}
+  .top-actions{gap:5px;flex:0 0 auto}
+  .iconbtn{min-width:40px;padding:7px 9px;border-radius:11px}
+  .top-actions .label{display:none}
+  .hero{gap:10px;margin-bottom:10px}
+  .hero-main{padding:15px;border-radius:18px}
+  .hero-main h2{font-size:25px;line-height:1.25}
+  .hero-main p{font-size:14px}
+  .hero-side{padding:14px;border-radius:18px}
+  .chips{gap:6px;margin-top:12px}.chip{font-size:12px;padding:5px 8px}
+  .tabs{gap:6px;margin:4px -2px 14px;padding:0 2px 4px}
+  .tab{font-size:14px;padding:8px 11px;border-radius:12px}
+  .section-title{align-items:flex-start;flex-direction:column;gap:4px;margin-bottom:10px}
+  .section-title h2{font-size:21px}.section-title p{font-size:13px}
+  .grid,.family-grid,.logic{grid-template-columns:1fr}
+  .card,.family-card{padding:14px;border-radius:16px}
+  .family-card .emoji{font-size:28px}
+  .quiz-main,.trainer-main{padding:14px;border-radius:17px}
+  .quiz-side,.trainer-side{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .stat{padding:12px;border-radius:15px}.stat .big{font-size:24px}
+  .qmeta{flex-wrap:wrap;row-gap:3px}
+  .question{font-size:19px;margin:11px 0 13px}
+  .choice-grid{grid-template-columns:1fr}.choice,.option{padding:11px 12px}
+  .question-anchor{top:62px;margin:-2px 0 11px;padding:10px 11px;border-radius:12px}
+  .question-anchor .qa-text{font-size:16px;line-height:1.4}
+  .question-anchor .qa-label{font-size:11px}
+  .practice .card{min-height:auto}
+  .trainer-step{padding:12px}.step-options{gap:6px}.step-option{padding:8px 10px}
+  .btnrow{gap:7px}.btn{padding:9px 12px}
+  .mistake-card{padding:13px}.mistake-card h3{font-size:17px}
+  .modal{align-items:flex-start;padding:6px; padding-top:max(6px,env(safe-area-inset-top));padding-bottom:max(6px,env(safe-area-inset-bottom))}
+  .modal-box{width:100%;max-height:calc(100dvh - 12px);border-radius:17px}
+  .modal-head{position:sticky;top:0;z-index:2;padding:10px 11px;gap:8px}
+  .modal-head h3{font-size:17px}.modal-head p{display:none}
+  .modal-close{padding:7px 9px;min-height:40px;white-space:nowrap}
+  .modal-body{padding:7px}
+}
+
+/* 較窄 iPhone（SE 等） */
+@media(max-width:430px){
+  .brand h1{max-width:56vw;font-size:16px}
+  .hero-main h2{font-size:23px}
+  .quiz-side,.trainer-side{grid-template-columns:1fr}
+  .mistake-toolbar .btn{flex:1 1 140px}
+  .legend{gap:7px}.legend span{font-size:12px}
+  .feedback{padding:11px 12px}
+}
+
+/* 橫向手機：減少固定區塊占高 */
+@media(orientation:landscape) and (max-height:600px){
+  .topbar{position:relative}
+  .question-anchor{top:8px}
+  .modal{padding:4px}.modal-box{max-height:calc(100dvh - 8px)}
+  .modal-head{padding:8px 10px}
+}
+
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-inner">
+  <div class="brand"><div class="logo">家</div><div><h1>家庭親屬通 v1.0</h1><small>Kinship Learning Lab｜國一公民</small></div></div>
+  <div class="top-actions"><button class="iconbtn" id="themeBtn" title="切換深淺色">◐ <span class="label">深淺色</span></button><button class="iconbtn" id="resetBtn" title="重設學習紀錄">↺ <span class="label">重設</span></button></div>
+</div></div>
+<div class="app">
+<section class="hero">
+  <div class="hero-main"><h2>先懂「判斷順序」，再記稱呼。</h2><p>本工具依你提供的課本內容整理，把容易混淆的概念拆成「親屬分類 → 直旁系 → 姻親 → 家庭型態」，再用互動題反覆練習。</p><div class="chips"><span class="chip">血親 vs. 姻親</span><span class="chip">直系 vs. 旁系</span><span class="chip">小／折衷／大家庭</span><span class="chip">現代多樣家庭</span></div></div>
+  <div class="hero-side"><h3>🧭 建議學習順序</h3><div class="route"><div><b>1</b><span>先讀「觀念整理」，知道每一類的定義。</span></div><div><b>2</b><span>到「親屬樹」點人物，練習以小琪為中心判斷。</span></div><div><b>3</b><span>進入「判斷訓練」，照順序拆解關係，再做快速分類與隨機測驗。</span></div></div></div>
+</section>
+
+<nav class="tabs" id="tabs">
+<button class="tab active" data-tab="concept">① 觀念整理</button>
+<button class="tab" data-tab="tree">② 親屬樹</button>
+<button class="tab" data-tab="family">③ 家庭型態</button>
+<button class="tab" data-tab="practice">④ 快速分類</button>
+<button class="tab" data-tab="trainer">⑤ 判斷訓練</button>
+<button class="tab" data-tab="quiz">⑥ 隨機測驗</button>
+<button class="tab" data-tab="mistakes">⑦ 本次錯題 <span class="mistake-badge" id="mistakeTabCount">0</span></button>
+</nav>
+
+<section class="panel active" id="concept">
+<div class="section-title"><div><h2>親屬關係：先看大分類</h2><p>依課本：親屬關係可分為配偶、血親與姻親。</p></div></div>
+<div class="logic">
+  <div class="step"><span class="numb">1</span><b>先問：兩人是否因婚姻而互為配偶？</b><div class="mini">是 → 配偶</div></div>
+  <div class="step"><span class="numb">2</span><b>不是配偶，再問：是否有血緣或法律擬制血親？</b><div class="mini">是 → 血親</div></div>
+  <div class="step"><span class="numb">3</span><b>血親再分：自然血親／法定血親</b><div class="mini">自然血親還要分直系、旁系</div></div>
+  <div class="step"><span class="numb">4</span><b>若是因婚姻延伸出的法定親屬關係</b><div class="mini">依民法規定的三類 → 姻親</div></div>
+</div>
+<div class="grid">
+  <article class="card accent-orange"><h3>💍 配偶</h3><p>雙方當事人因<span class="key">婚姻而互為配偶</span>。</p><p class="mini">判斷重點：不是血親，也不是把「配偶」直接算成姻親。</p></article>
+  <article class="card accent-green"><h3>🧬 血親</h3><p>包括<span class="key">自然血親</span>與<span class="key">法定血親</span>。</p><p><b>自然血親</b>：因出生而形成。<br><b>法定血親</b>：又稱擬制血親，經法律程序成立，例如養父母與養子女。</p></article>
+  <article class="card accent-purple"><h3>🤝 姻親</h3><p>因<span class="key">婚姻存續</span>而產生的親屬關係；依課本所列民法規定，限三類。</p><p class="mini">不是所有「兩家人因結婚而認識」的人都屬於法律上的姻親。</p></article>
+</div>
+<div class="section-title" style="margin-top:20px"><div><h2>自然血親：直系與旁系</h2><p>最重要的判斷：是否存在「出生的直接關係」。</p></div></div>
+<div class="grid">
+  <article class="card accent-green"><h3>⬆⬇ 直系血親</h3><p>彼此間具有<span class="key">出生的直接關係</span>。</p><p><b>課本例：</b>祖父母、父母、子女。</p><p class="mini">記法：可以沿著「上一代 ↕ 下一代」直接連下去。</p></article>
+  <article class="card accent-blue"><h3>↗↘ 旁系血親</h3><p>具有<span class="key">相同的血緣</span>，但彼此間<span class="key">沒有出生的直接關係</span>。</p><p><b>課本例：</b>兄弟姊妹、伯叔姑姨。</p><p class="mini">記法：要先往共同祖先走，再岔到另一支。</p></article>
+  <article class="card accent-orange"><h3>⚠️ 最常見陷阱</h3><p><b>哥哥、姊姊不是直系。</b>你和兄弟姊妹雖有相同父母，但不是「你生他／他生你」，所以是旁系血親。</p></article>
+</div>
+<div class="section-title" style="margin-top:20px"><div><h2>姻親：課本列出的三類</h2></div></div>
+<div class="grid">
+  <article class="card accent-purple"><h3>① 血親的配偶</h3><p>例如：<b>姊姊或妹妹的丈夫</b>、<b>伯父或叔叔的妻子</b>等。</p></article>
+  <article class="card accent-purple"><h3>② 配偶的血親</h3><p>例如：<b>配偶的父母</b>、<b>配偶的兄弟姊妹</b>等。</p></article>
+  <article class="card accent-purple"><h3>③ 配偶的血親的配偶</h3><p>例如：<b>哥哥和弟弟的妻子互為妯娌</b>；<b>姊姊和妹妹的丈夫互為連襟</b>。</p></article>
+</div>
+<div class="notice"><b>課本特別提醒：</b>民法規定的姻親以以上三者為限。例如「爺爺與外公互稱親家公」，屬於血親的配偶的血親，<b>不是姻親關係</b>。</div>
+</section>
+
+<section class="panel" id="tree">
+<div class="section-title"><div><h2>以「小琪」為中心的親屬樹</h2><p>保留課本的「樹狀分枝」概念：先看上一代從哪裡分支，再判斷直系、旁系或姻親。</p></div></div>
+<div class="card tree-card">
+  <div class="tree-scroll-hint">↔ 親屬樹會依畫面寬度自動縮放；螢幕較窄時可左右滑動，分枝關係不會被重新排列。</div>
+  <div class="tree-host" id="mainTreeHost"></div>
+  <div class="legend"><span><i class="dot direct"></i>直系血親</span><span><i class="dot collateral"></i>旁系血親</span><span><i class="dot affinal"></i>姻親</span><span><i class="dot" style="background:var(--orange)"></i>小琪</span></div>
+  <div class="feedback tree-feedback">👆 請點一位人物查看判斷。</div>
+</div>
+</section>
+
+<section class="panel" id="family">
+<div class="section-title"><div><h2>家庭型態：先掌握三種基本型態</h2><p>依家庭組成分子關係的不同，課本大致分為三種。</p></div></div>
+<div class="family-grid">
+  <article class="family-card"><div class="emoji">🏠</div><h3>小家庭（核心家庭）</h3><ul><li>由<span class="key">一對夫妻</span>及其<span class="key">未婚子女</span>組成。</li><li>關鍵字：夫妻＋未婚子女。</li></ul></article>
+  <article class="family-card"><div class="emoji">🏘️</div><h3>折衷家庭（主幹家庭）</h3><ul><li>由小家庭成員及其<span class="key">直系尊親屬</span>組成。</li><li>課本例：祖父母、曾祖父母。</li><li>以<span class="key">三代同堂</span>居多。</li></ul></article>
+  <article class="family-card"><div class="emoji">🏡🏡</div><h3>大家庭（擴展家庭）</h3><ul><li>由<span class="key">數個具有血緣關係的小家庭</span>組成。</li><li>除小家庭成員外，可包括祖父母、已婚子女及其他旁系血親親屬。</li></ul></article>
+</div>
+<div class="section-title" style="margin-top:22px"><div><h2>課本列出的多樣化家庭生活模式</h2><p>這些不是拿來比較優劣，而是理解現代家庭可能有不同組成與生活方式。</p></div></div>
+<div class="family-grid">
+  <article class="family-card"><div class="emoji">💼💼</div><h3>頂客家庭（DINK）</h3><p>Double Income No Kids；由<span class="key">雙薪且沒有子女</span>的夫妻組成。</p></article>
+  <article class="family-card"><div class="emoji">👵👦</div><h3>隔代教養家庭</h3><p>父母因工作或其他原因無法親自照顧小孩，由<span class="key">祖父母照顧孫子女</span>。</p></article>
+  <article class="family-card"><div class="emoji">🏠↔🏠</div><h3>兩地家庭</h3><p>因工作或其他原因，使<span class="key">夫或妻未同住</span>所形成的家庭。</p></article>
+  <article class="family-card"><div class="emoji">👨‍👧</div><h3>單親家庭</h3><p>因夫妻離婚或其中一方死亡，由<span class="key">父或母單獨一人和未婚子女</span>組成。</p></article>
+  <article class="family-card"><div class="emoji">🧩</div><h3>重組家庭（繼親家庭）</h3><p>父母雙方或其中一方<span class="key">帶來前次婚姻的子女</span>所組成。</p></article>
+  <article class="family-card"><div class="emoji">🌏💍</div><h3>跨國婚姻家庭</h3><p><span class="key">夫或妻為外籍人士</span>所組成的家庭，又稱「新住民家庭」。</p></article>
+</div>
+</section>
+
+<section class="panel" id="practice">
+<div class="section-title"><div><h2>快速分類：先做判斷，再立即訂正</h2><p>每次會換一題。適合考前 3～5 分鐘快速練習。</p></div></div>
+<div class="practice">
+  <div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><h3 style="margin:0">🧬 親屬分類挑戰</h3><button class="btn secondary tree-help-btn" data-open-tree>🌳 開啟親屬樹</button></div><div class="question-anchor" style="margin-top:12px"><div class="qa-label">目前題目</div><div class="qa-text" id="kinQuestionSticky"></div></div><div class="scenario hidden" id="kinScenario"></div><div class="choice-grid" id="kinChoices"></div><div class="feedback" id="kinFeedback">請選擇答案。</div><div class="btnrow"><button class="btn secondary" id="nextKin">換下一題</button></div></div>
+  <div class="card"><h3>🏠 家庭型態挑戰</h3><div class="question-anchor"><div class="qa-label">目前題目</div><div class="qa-text" id="familyQuestionSticky"></div></div><div class="scenario hidden" id="familyScenario"></div><div class="choice-grid" id="familyChoices"></div><div class="feedback" id="familyFeedback">請選擇答案。</div><div class="btnrow"><button class="btn secondary" id="nextFamily">換下一題</button></div></div>
+</div>
+</section>
+
+<section class="panel" id="trainer">
+<div class="section-title"><div><h2>親屬關係判斷訓練</h2><p>不要直接猜名稱。照教材的邏輯，一步一步找出關係。</p></div></div>
+<div class="notice"><b>記憶口訣：</b>先看「是不是配偶」→ 再看「是不是血親」→ 自然血親才分直系／旁系；若是婚姻延伸，再對照課本列出的三類姻親。</div>
+<div class="trainer-layout">
+  <div class="trainer-main">
+    <div class="trainer-progress"><span id="trainerCount">第 1 題</span><span id="trainerSolved">完成 0 題</span></div><div class="btnrow" style="margin:8px 0 12px"><button class="btn secondary tree-help-btn" data-open-tree>🌳 開啟親屬樹輔助判斷</button></div>
+    <div class="question-anchor"><div class="qa-label">本題關係</div><div class="qa-text" id="trainerQuestionSticky"></div></div>
+    <div class="question hidden" id="trainerQuestion"></div>
+    <div class="relation-path" id="trainerPath"></div>
+    <div id="trainerSteps"></div>
+    <div class="trainer-result hidden" id="trainerResult"></div>
+    <div class="btnrow"><button class="btn" id="nextTrainer">換下一題</button><button class="btn secondary" id="restartTrainer">重新開始</button></div>
+  </div>
+  <aside class="trainer-side">
+    <div class="stat"><h3 style="margin:0 0 8px">🧠 判斷順序</h3><div class="mini-rule"><div><b>① 配偶？</b><br>兩人是否因婚姻互為配偶。</div><div><b>② 血親？</b><br>有血緣或法律擬制的血親關係。</div><div><b>③ 自然血親？</b><br>有出生的直接關係＝直系；有共同血緣但非直接出生＝旁系。</div><div><b>④ 婚姻延伸？</b><br>只對照：血親的配偶、配偶的血親、配偶的血親的配偶。</div></div></div>
+    <div class="stat"><div class="mini">本模式重點</div><b>看「關係怎麼連起來」</b><p class="mini">例如「叔叔的妻子」不要只背嬸嬸；先判斷叔叔是血親，再判斷他的妻子是「血親的配偶」。</p></div>
+  </aside>
+</div>
+</section>
+
+<section class="panel" id="quiz">
+<div class="section-title"><div><h2>隨機測驗</h2><p>題目只使用本教材整理出的概念，不加入超出課本範圍的法律細節。</p></div></div>
+<div class="quiz-wrap">
+  <div class="quiz-main"><div class="qmeta"><span id="qCount">第 1 題</span><span id="qType">觀念題</span></div><div class="btnrow" id="quizTreeTools" style="margin:10px 0 4px"><button class="btn secondary tree-help-btn" data-open-tree>🌳 開啟親屬樹</button></div><div class="question" id="question"></div><div class="options" id="options"></div><div class="feedback hidden" id="quizFeedback"></div><div class="btnrow"><button class="btn" id="nextQ">下一題</button><button class="btn secondary" id="restartQ">重新開始</button></div></div>
+  <aside class="quiz-side"><div class="stat"><div class="mini">本次答對</div><div class="big"><span id="score">0</span> / <span id="answered">0</span></div><div class="progress"><i id="scoreBar"></i></div></div><div class="stat"><div class="mini">連續答對</div><div class="big" id="streak">0 🔥</div></div></aside>
+</div>
+</section>
+
+<section class="panel" id="mistakes">
+<div class="section-title"><div><h2>本次錯題複習</h2><p>工具會自動收集「快速分類、判斷訓練、隨機測驗」中答錯的題目；同一題錯越多次會優先顯示。</p></div></div>
+<div class="notice"><b>只記錄這次練習：</b>錯題暫存在目前瀏覽器分頁的工作階段中，不需要帳號或後端；關閉整個瀏覽器工作階段後可自然清除，也可手動清空。</div>
+<div class="mistake-toolbar"><button class="btn" id="startMistakeReview">▶ 複習本次錯題</button><button class="btn secondary" id="clearMistakes">清空本次錯題</button><span class="mini" id="mistakeSummary">目前 0 題</span></div>
+<div id="mistakeList" class="mistake-list"></div>
+<div id="mistakeReviewBox" class="quiz-main review-main hidden">
+  <div class="qmeta"><span id="mrCount">錯題 1 / 1</span><span id="mrWrongCount"></span></div>
+  <div class="review-source" id="mrSource"></div>
+  <div class="question-anchor"><div class="qa-label">錯題複習</div><div class="qa-text" id="mrQuestion"></div></div>
+  <div class="options" id="mrOptions"></div>
+  <div class="feedback hidden" id="mrFeedback"></div>
+  <div class="btnrow"><button class="btn" id="mrNext">下一題</button><button class="btn secondary" id="mrBack">回錯題清單</button></div>
+</div>
+</section>
+
+<template id="familyTreeTemplate">
+  <div class="tree-scroll">
+    <div class="tree-scale-box">
+      <div class="family-tree" aria-label="以小琪為中心的親屬樹">
+        <svg viewBox="0 0 1640 640" preserveAspectRatio="none" aria-hidden="true">
+          <!-- 父系祖父母與子女分枝 -->
+          <path class="marriage" d="M428 80 H448"/>
+          <path class="branch" d="M438 80 V165 H754"/>
+          <path class="branch" d="M114 165 H754"/>
+          <path class="branch" d="M114 165 V225 M424 165 V225 M754 165 V225"/>
+          <!-- 姑姑婚姻與表親 --> <path class="marriage" d="M178 263 H198"/><path class="branch" d="M188 263 V425"/>
+          <!-- 叔叔婚姻與堂親 --> <path class="marriage" d="M488 263 H508"/><path class="branch" d="M498 263 V425"/>
+          <!-- 母系祖父母與子女分枝 -->
+          <path class="marriage" d="M1248 80 H1268"/>
+          <path class="branch" d="M1258 80 V165"/>
+          <path class="branch" d="M906 165 H1384"/>
+          <path class="branch" d="M906 165 V225 M1074 165 V225 M1384 165 V225"/>
+          <!-- 阿姨婚姻與表親 --> <path class="marriage" d="M1138 263 H1158"/><path class="branch" d="M1148 263 V425"/>
+          <!-- 舅舅婚姻與表親 --> <path class="marriage" d="M1448 263 H1468"/><path class="branch" d="M1458 263 V425"/>
+          <!-- 父母婚姻與子女 --> <path class="marriage" d="M818 263 H842"/><path class="branch" d="M830 263 V455"/><path class="branch" d="M760 455 H900"/><path class="branch" d="M760 455 V500 M900 455 V500"/>
+        </svg>
+        <span class="tree-group-label" style="left:385px;top:12px">父系</span><span class="tree-group-label" style="left:1210px;top:12px">母系</span>
+        <button class="person direct" style="left:300px;top:42px" data-rel="祖父" data-kind="直系血親" data-why="祖父與小琪之間可沿父親這條出生關係直接往上連，因此屬直系血親。"><span class="relation">祖父</span><span class="tag">爸爸的爸爸</span></button>
+        <button class="person direct" style="left:448px;top:42px" data-rel="祖母" data-kind="直系血親" data-why="祖母與小琪之間可沿父親這條出生關係直接往上連，因此屬直系血親。"><span class="relation">祖母</span><span class="tag">爸爸的媽媽</span></button>
+        <button class="person direct" style="left:1120px;top:42px" data-rel="外祖父" data-kind="直系血親" data-why="外祖父與小琪之間可沿母親這條出生關係直接往上連，因此屬直系血親。"><span class="relation">外祖父</span><span class="tag">媽媽的爸爸</span></button>
+        <button class="person direct" style="left:1268px;top:42px" data-rel="外祖母" data-kind="直系血親" data-why="外祖母與小琪之間可沿母親這條出生關係直接往上連，因此屬直系血親。"><span class="relation">外祖母</span><span class="tag">媽媽的媽媽</span></button>
+
+        <button class="person collateral" style="left:50px;top:225px" data-rel="姑姑" data-kind="旁系血親" data-why="姑姑和小琪具有共同血緣，但彼此沒有出生的直接關係，所以是旁系血親。"><span class="relation">姑姑</span><span class="tag">爸爸的姊妹</span></button>
+        <button class="person affinal" style="left:198px;top:225px" data-rel="姑丈" data-kind="姻親" data-why="姑姑是小琪的旁系血親；姑丈是小琪『血親的配偶』，屬課本列出的姻親。"><span class="relation">姑丈</span><span class="tag">姑姑的丈夫</span></button>
+        <button class="person collateral" style="left:360px;top:225px" data-rel="叔叔" data-kind="旁系血親" data-why="叔叔和小琪具有共同血緣，但彼此沒有出生的直接關係，所以是旁系血親。"><span class="relation">叔叔</span><span class="tag">爸爸的兄弟</span></button>
+        <button class="person affinal" style="left:508px;top:225px" data-rel="嬸嬸" data-kind="姻親" data-why="叔叔是小琪的旁系血親；嬸嬸是『血親的配偶』，屬姻親。"><span class="relation">嬸嬸</span><span class="tag">叔叔的妻子</span></button>
+        <button class="person direct" style="left:690px;top:225px" data-rel="父親" data-kind="直系血親" data-why="父親與小琪之間具有直接的出生關係，所以是直系血親。"><span class="relation">父親</span><span class="tag">爸爸</span></button>
+        <button class="person direct" style="left:842px;top:225px" data-rel="母親" data-kind="直系血親" data-why="母親與小琪之間具有直接的出生關係，所以是直系血親。"><span class="relation">母親</span><span class="tag">媽媽</span></button>
+        <button class="person collateral" style="left:1010px;top:225px" data-rel="阿姨" data-kind="旁系血親" data-why="阿姨和小琪有共同血緣，但沒有出生的直接關係，屬旁系血親。"><span class="relation">阿姨</span><span class="tag">媽媽的姊妹</span></button>
+        <button class="person affinal" style="left:1158px;top:225px" data-rel="姨丈" data-kind="姻親" data-why="阿姨是小琪的旁系血親；姨丈是『血親的配偶』，屬姻親。"><span class="relation">姨丈</span><span class="tag">阿姨的丈夫</span></button>
+        <button class="person collateral" style="left:1320px;top:225px" data-rel="舅舅" data-kind="旁系血親" data-why="舅舅和小琪有共同血緣，但沒有出生的直接關係，屬旁系血親。"><span class="relation">舅舅</span><span class="tag">媽媽的兄弟</span></button>
+        <button class="person affinal" style="left:1468px;top:225px" data-rel="舅媽" data-kind="姻親" data-why="舅舅是小琪的旁系血親；舅媽是『血親的配偶』，屬姻親。"><span class="relation">舅媽</span><span class="tag">舅舅的妻子</span></button>
+
+        <button class="person collateral" style="left:124px;top:425px" data-rel="表哥／表姊" data-kind="旁系血親" data-why="與小琪有共同祖先，但彼此沒有出生的直接關係，所以屬旁系血親。"><span class="relation">表哥／表姊</span><span class="tag">姑姑的子女</span></button>
+        <button class="person collateral" style="left:434px;top:425px" data-rel="堂哥／堂姊" data-kind="旁系血親" data-why="與小琪有共同祖先，但彼此沒有出生的直接關係，所以屬旁系血親。"><span class="relation">堂哥／堂姊</span><span class="tag">叔叔的子女</span></button>
+        <button class="person collateral" style="left:1084px;top:425px" data-rel="表哥／表姊" data-kind="旁系血親" data-why="與小琪有共同祖先，但彼此沒有出生的直接關係，所以屬旁系血親。"><span class="relation">表哥／表姊</span><span class="tag">阿姨的子女</span></button>
+        <button class="person collateral" style="left:1394px;top:425px" data-rel="表哥／表姊" data-kind="旁系血親" data-why="與小琪有共同祖先，但彼此沒有出生的直接關係，所以屬旁系血親。"><span class="relation">表哥／表姊</span><span class="tag">舅舅的子女</span></button>
+        <button class="person collateral" style="left:696px;top:500px" data-rel="哥哥" data-kind="旁系血親" data-why="哥哥和小琪有相同父母，但彼此沒有出生的直接關係，所以是旁系血親。"><span class="relation">哥哥</span><span class="tag">兄弟姊妹</span></button>
+        <button class="person focus" style="left:836px;top:500px" data-rel="小琪" data-kind="自己" data-why="這張親屬樹以小琪為判斷中心。"><span class="relation">小琪</span><span class="tag">判斷中心</span></button>
+      </div>
+    </div>
+  </div>
+</template>
+<div class="modal" id="treeModal" aria-hidden="true">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="treeModalTitle">
+    <div class="modal-head"><div><h3 id="treeModalTitle">🌳 親屬樹判斷小幫手</h3><p>可一邊看樹狀分枝，一邊回想題目的關係；關閉後仍停留在原題。</p></div><button class="modal-close" id="treeModalClose">✕ 關閉</button></div>
+    <div class="modal-body"><div class="tree-scroll-hint">↔ 可左右滑動查看完整親屬樹；樹狀分枝不會因裝置寬度而重新排列。</div><div id="modalTreeHost"></div><div class="feedback modal-feedback tree-feedback">👆 也可以點人物查看直系／旁系／姻親判斷。</div></div>
+  </div>
+</div>
+<div class="footer">教材內容基準：你提供的課本「家庭中的親屬關係」「家庭型態與生活模式」頁面。「家庭親屬通 Kinship Learning Lab」用於複習與記憶，不延伸加入課本未列出的法律細節。</div>
+</div>
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+// theme
+const savedTheme=localStorage.getItem('family-study-theme'); if(savedTheme) document.documentElement.dataset.theme=savedTheme;
+$('#themeBtn').onclick=()=>{const d=document.documentElement; const next=d.dataset.theme==='dark'?'light':'dark'; d.dataset.theme=next;localStorage.setItem('family-study-theme',next)};
+// tabs
+$$('.tab').forEach(b=>b.onclick=()=>{$$('.tab').forEach(x=>x.classList.remove('active'));$$('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#'+b.dataset.tab).classList.add('active');window.scrollTo({top:0,behavior:'smooth'})});
+// tree：保留教材樹狀分枝；桌機自動等比例縮放，窄螢幕再水平捲動
+const TREE_W=1640,TREE_H=640;
+function treeMinScale(scroll){
+  const w=window.innerWidth;
+  const inModal=!!scroll.closest('.modal');
+  if(w<=430) return inModal ? .62 : .60;
+  if(w<=620) return inModal ? .64 : .62;
+  if(w<=820) return .64;
+  if(w<=1024) return .66;
+  return .66;
+}
+function fitTrees(){
+  $$('.tree-scroll').forEach(scroll=>{
+    const box=scroll.querySelector('.tree-scale-box'),tree=scroll.querySelector('.family-tree');
+    if(!box||!tree)return;
+    const available=Math.max(280,scroll.clientWidth-8);
+    const fit=Math.min(1,available/TREE_W);
+    const scale=Math.max(treeMinScale(scroll),fit);
+    const scaledW=Math.round(TREE_W*scale), scaledH=Math.round(TREE_H*scale);
+    tree.style.transform=`scale(${scale})`;
+    box.style.width=`${scaledW}px`;
+    box.style.height=`${scaledH}px`;
+    const needsScroll=scaledW>available+3;
+    scroll.classList.toggle('needs-scroll',needsScroll);
+    const shell=scroll.closest('.tree-card')||scroll.closest('.modal-body');
+    const hint=shell&&shell.querySelector('.tree-scroll-hint');
+    if(hint) hint.style.display=needsScroll?'block':'none';
+    if(needsScroll&&scroll.clientWidth>100){
+      const last=Number(scroll.dataset.centeredWidth||0);
+      if(!last||Math.abs(last-available)>180){
+        requestAnimationFrame(()=>{scroll.scrollLeft=Math.max(0,(scaledW-available)/2);});
+        scroll.dataset.centeredWidth=String(available);
+      }
+    }
+  });
+}
+function mountTree(host){const t=$('#familyTreeTemplate');if(host&&t){host.appendChild(t.content.cloneNode(true));requestAnimationFrame(fitTrees);}}
+mountTree($('#mainTreeHost'));mountTree($('#modalTreeHost'));
+window.addEventListener('resize',()=>requestAnimationFrame(fitTrees));window.addEventListener('orientationchange',()=>setTimeout(fitTrees,120));
+document.addEventListener('click',e=>{const p=e.target.closest('.person');if(!p)return;const shell=p.closest('.tree-card,.modal-body')||document;const f=shell.querySelector('.tree-feedback');if(f){f.className='feedback good tree-feedback'+(f.classList.contains('modal-feedback')?' modal-feedback':'');f.innerHTML=`<b>${p.dataset.rel}</b> → <b>${p.dataset.kind}</b><br>${p.dataset.why}`;}});
+const treeModal=$('#treeModal');
+function openTreeModal(){treeModal.classList.add('open');treeModal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';requestAnimationFrame(fitTrees);}
+function closeTreeModal(){treeModal.classList.remove('open');treeModal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+document.addEventListener('click',e=>{if(e.target.closest('[data-open-tree]'))openTreeModal();});
+$('#treeModalClose').onclick=closeTreeModal;treeModal.addEventListener('click',e=>{if(e.target===treeModal)closeTreeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&treeModal.classList.contains('open'))closeTreeModal()});
+
+const kinBank=[
+ {q:'小琪和父親的關係，應判斷為哪一類？',a:'直系血親',o:['直系血親','旁系血親','姻親','配偶'],why:'父親與子女之間具有出生的直接關係。'},
+ {q:'小琪和哥哥的關係，應判斷為哪一類？',a:'旁系血親',o:['直系血親','旁系血親','姻親','配偶'],why:'兄弟姊妹有相同血緣，但彼此沒有出生的直接關係。'},
+ {q:'小琪和姑姑的關係，應判斷為哪一類？',a:'旁系血親',o:['直系血親','旁系血親','姻親','法定血親'],why:'姑姑與小琪有共同血緣，但不是彼此直接生出的關係。'},
+ {q:'小琪和嬸嬸的關係，應判斷為哪一類？',a:'姻親',o:['直系血親','旁系血親','姻親','配偶'],why:'叔叔是小琪的血親，嬸嬸是血親的配偶，屬姻親。'},
+ {q:'養父母與養子女，在課本分類中屬於？',a:'法定血親',o:['自然直系血親','旁系血親','法定血親','姻親'],why:'法定血親又稱擬制血親，是經法律程序成立的血親關係。'},
+ {q:'「爺爺與外公互稱親家公」在課本提醒中，兩人是否屬姻親？',a:'不是姻親',o:['是姻親','不是姻親','是直系血親','是旁系血親'],why:'課本明確說明：這是血親的配偶的血親，不屬民法所列三類姻親。'}
+];
+const familyBank=[
+ {q:'一對夫妻和未婚子女共同生活。',a:'小家庭',o:['小家庭','折衷家庭','大家庭','單親家庭'],why:'小家庭又稱核心家庭，由夫妻及未婚子女組成。'},
+ {q:'祖父母、父母與未婚子女三代同堂。',a:'折衷家庭',o:['小家庭','折衷家庭','大家庭','頂客家庭'],why:'折衷家庭又稱主幹家庭，由小家庭成員及其直系尊親屬組成，以三代同堂居多。'},
+ {q:'數個有血緣關係的小家庭共同生活，還包括已婚子女與其他旁系血親。',a:'大家庭',o:['小家庭','折衷家庭','大家庭','重組家庭'],why:'大家庭又稱擴展家庭，由數個具血緣關係的小家庭組成。'},
+ {q:'夫妻兩人都有工作，而且沒有子女。',a:'頂客家庭',o:['頂客家庭','兩地家庭','單親家庭','小家庭'],why:'頂客家庭 DINK 指雙薪且沒有子女的夫妻所組成。'},
+ {q:'父母因工作無法親自照顧孩子，主要由祖父母照顧孫子女。',a:'隔代教養家庭',o:['折衷家庭','隔代教養家庭','重組家庭','大家庭'],why:'這符合課本對隔代教養家庭的說明。'},
+ {q:'夫妻因工作因素分住不同地方。',a:'兩地家庭',o:['兩地家庭','單親家庭','跨國婚姻家庭','頂客家庭'],why:'因工作或其他原因使夫或妻未同住，形成兩地家庭。'},
+ {q:'父母離婚後，由母親單獨與未婚子女共同生活。',a:'單親家庭',o:['兩地家庭','單親家庭','小家庭','重組家庭'],why:'課本將離婚或一方死亡，由父或母單獨一人和未婚子女組成者稱單親家庭。'},
+ {q:'再婚時，父母其中一方帶著前次婚姻的子女共同組成家庭。',a:'重組家庭',o:['重組家庭','折衷家庭','大家庭','隔代教養家庭'],why:'重組家庭又稱繼親家庭，父母雙方或一方帶來前次婚姻子女。'},
+ {q:'夫或妻其中一人為外籍人士所組成的家庭。',a:'跨國婚姻家庭',o:['跨國婚姻家庭','兩地家庭','大家庭','頂客家庭'],why:'課本稱為跨國婚姻家庭，又稱新住民家庭。'}
+];
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+// 本次錯題：使用 sessionStorage，適合靜態 GitHub Pages，無需後端
+let mistakes={};
+try{mistakes=JSON.parse(sessionStorage.getItem('family-study-mistakes')||'{}')||{}}catch(e){mistakes={}}
+function mistakeKey(source,item){return source+'|'+item.q}
+function addMistake(source,item){
+ const key=mistakeKey(source,item); const old=mistakes[key]||{source,q:item.q,a:item.a||item.result||'',o:item.o||[],why:item.why||'',count:0};
+ old.count=(old.count||0)+1; old.source=source; old.q=item.q; old.a=item.a||item.result||old.a||''; old.o=item.o||old.o||[]; old.why=item.why||old.why||'';
+ mistakes[key]=old; sessionStorage.setItem('family-study-mistakes',JSON.stringify(mistakes)); updateMistakeUI();
+}
+function mistakeArray(){return Object.values(mistakes).sort((a,b)=>(b.count||0)-(a.count||0)||a.q.localeCompare(b.q,'zh-Hant'))}
+function updateMistakeUI(){
+ const arr=mistakeArray(), total=arr.reduce((n,x)=>n+(x.count||0),0); const badge=$('#mistakeTabCount'); if(badge)badge.textContent=arr.length;
+ const sum=$('#mistakeSummary'); if(sum)sum.textContent=`目前 ${arr.length} 題，共答錯 ${total} 次`;
+ const list=$('#mistakeList'); if(!list)return;
+ if(!arr.length){list.innerHTML='<div class="review-empty">🎉 目前還沒有錯題。先到「快速分類」、「判斷訓練」或「隨機測驗」練習吧！</div>';return;}
+ list.innerHTML=arr.map(x=>`<div class="mistake-card"><div class="mistake-meta"><span>${x.source}</span><span class="mistake-count">答錯 ${x.count} 次</span></div><h3>${x.q}</h3><p><b>正確觀念：</b>${x.a||'依步驟完成判斷'}</p><p>${x.why||''}</p></div>`).join('');
+}
+
+function renderPractice(bank,scenarioEl,choicesEl,feedbackEl,stickyEl,source){const item=bank[Math.floor(Math.random()*bank.length)];scenarioEl.textContent=item.q;if(stickyEl)stickyEl.textContent=item.q;choicesEl.innerHTML='';feedbackEl.className='feedback';feedbackEl.textContent='請選擇答案。';shuffle(item.o).forEach(c=>{const b=document.createElement('button');b.className='choice';b.textContent=c;b.onclick=()=>{[...choicesEl.children].forEach(x=>x.disabled=true);if(c===item.a){b.classList.add('selected');feedbackEl.className='feedback good';feedbackEl.innerHTML=`✅ <b>答對：</b>${item.a}<br>${item.why}`}else{addMistake(source,item);b.classList.add('selected');feedbackEl.className='feedback bad';feedbackEl.innerHTML=`❌ 你選了「${c}」。正確是 <b>${item.a}</b>。<br>${item.why}`}};choicesEl.appendChild(b)});}
+function newKin(){renderPractice(kinBank,$('#kinScenario'),$('#kinChoices'),$('#kinFeedback'),$('#kinQuestionSticky'),'快速分類｜親屬')}
+function newFamily(){renderPractice(familyBank,$('#familyScenario'),$('#familyChoices'),$('#familyFeedback'),$('#familyQuestionSticky'),'快速分類｜家庭型態')}
+$('#nextKin').onclick=newKin;$('#nextFamily').onclick=newFamily;newKin();newFamily();
+
+const trainerBank=[
+ {q:'小琪和哥哥是什麼親屬關係？',path:['小琪','哥哥'],steps:[
+   {q:'第 1 步：哥哥和小琪是因婚姻而成為配偶嗎？',o:['是','不是'],a:'不是',hint:'兄妹不是婚姻關係。'},
+   {q:'第 2 步：兩人有相同血緣嗎？',o:['有','沒有'],a:'有',hint:'兄弟姊妹具有相同血緣。'},
+   {q:'第 3 步：兩人之間有「出生的直接關係」嗎？',o:['有','沒有'],a:'沒有',hint:'哥哥不是由小琪出生，小琪也不是由哥哥出生。'}],result:'旁系血親',why:'兄弟姊妹有相同血緣，但彼此沒有出生的直接關係，所以是旁系血親。'},
+ {q:'小琪和父親是什麼親屬關係？',path:['小琪','父親'],steps:[
+   {q:'第 1 步：父親和小琪是配偶嗎？',o:['是','不是'],a:'不是',hint:'父女不是婚姻關係。'},
+   {q:'第 2 步：兩人有血緣關係嗎？',o:['有','沒有'],a:'有',hint:'父母與子女屬自然血親。'},
+   {q:'第 3 步：兩人之間有「出生的直接關係」嗎？',o:['有','沒有'],a:'有',hint:'父母與子女具有出生的直接關係。'}],result:'直系血親',why:'父母與子女彼此有出生的直接關係，所以是直系血親。'},
+ {q:'小琪和姑姑是什麼親屬關係？',path:['小琪','父親','姑姑'],steps:[
+   {q:'第 1 步：姑姑和小琪是配偶嗎？',o:['是','不是'],a:'不是',hint:'姑姑是父親的姊妹，不是小琪的配偶。'},
+   {q:'第 2 步：姑姑和小琪有相同血緣嗎？',o:['有','沒有'],a:'有',hint:'姑姑和小琪具有共同血緣。'},
+   {q:'第 3 步：兩人之間有「出生的直接關係」嗎？',o:['有','沒有'],a:'沒有',hint:'姑姑不是小琪的直系尊親屬或直系卑親屬。'}],result:'旁系血親',why:'姑姑與小琪有共同血緣，但沒有出生的直接關係，所以是旁系血親。'},
+ {q:'「爸爸的哥哥的妻子」和小琪是什麼關係？',path:['小琪','爸爸','爸爸的哥哥（伯父）','伯父的妻子'],steps:[
+   {q:'第 1 步：爸爸的哥哥（伯父）和小琪是血親嗎？',o:['是','不是'],a:'是',hint:'伯父與小琪有共同血緣。'},
+   {q:'第 2 步：伯父的妻子，是小琪「血親的什麼人」？',o:['配偶','血親','子女'],a:'配偶',hint:'她是伯父的配偶。'},
+   {q:'第 3 步：課本把「血親的配偶」列在哪一類？',o:['姻親','旁系血親','直系血親'],a:'姻親',hint:'血親的配偶是課本列出的第一類姻親。'}],result:'姻親（血親的配偶）',why:'伯父是小琪的血親，伯父的妻子是「血親的配偶」，因此屬姻親。'},
+ {q:'「媽媽的姊姊的丈夫」和小琪是什麼關係？',path:['小琪','媽媽','媽媽的姊姊（阿姨）','阿姨的丈夫'],steps:[
+   {q:'第 1 步：媽媽的姊姊（阿姨）和小琪是血親嗎？',o:['是','不是'],a:'是',hint:'阿姨與小琪具有共同血緣。'},
+   {q:'第 2 步：阿姨的丈夫，是小琪「血親的什麼人」？',o:['配偶','血親','父母'],a:'配偶',hint:'他是阿姨的配偶。'},
+   {q:'第 3 步：依課本三類姻親，他屬於？',o:['血親的配偶','配偶的血親','配偶的血親的配偶'],a:'血親的配偶',hint:'先抓到「阿姨是我的血親」，再看她的丈夫。'}],result:'姻親（血親的配偶）',why:'阿姨是小琪的血親，阿姨的丈夫是「血親的配偶」，因此屬姻親。'},
+ {q:'「配偶的父母」和本人屬於哪一類姻親？',path:['本人','配偶','配偶的父母'],steps:[
+   {q:'第 1 步：本人和配偶是什麼關係？',o:['配偶','血親','旁系血親'],a:'配偶',hint:'婚姻雙方互為配偶。'},
+   {q:'第 2 步：配偶和他的父母是什麼關係？',o:['血親','姻親','沒有親屬關係'],a:'血親',hint:'父母與子女是血親。'},
+   {q:'第 3 步：所以「配偶的父母」屬於課本哪一類？',o:['血親的配偶','配偶的血親','配偶的血親的配偶'],a:'配偶的血親',hint:'沿著「本人 → 配偶 → 配偶的血親」判斷。'}],result:'姻親（配偶的血親）',why:'配偶的父母是「配偶的血親」，屬課本列出的第二類姻親。'},
+ {q:'「哥哥的妻子」和小琪屬於哪一類？',path:['小琪','哥哥','哥哥的妻子'],steps:[
+   {q:'第 1 步：哥哥和小琪是血親嗎？',o:['是','不是'],a:'是',hint:'兄弟姊妹是旁系血親。'},
+   {q:'第 2 步：哥哥的妻子是哥哥的？',o:['配偶','血親','姊妹'],a:'配偶',hint:'婚姻雙方互為配偶。'},
+   {q:'第 3 步：所以哥哥的妻子對小琪而言屬於？',o:['血親的配偶','配偶的血親','直系血親'],a:'血親的配偶',hint:'哥哥是血親，他的妻子就是血親的配偶。'}],result:'姻親（血親的配偶）',why:'哥哥是小琪的血親，哥哥的妻子屬「血親的配偶」。'},
+ {q:'爺爺和外公互稱「親家公」，依課本是否屬於姻親？',path:['爺爺','父親（爺爺的血親）','母親（父親的配偶）','外公（母親的血親）'],steps:[
+   {q:'第 1 步：爺爺與父親是血親嗎？',o:['是','不是'],a:'是',hint:'父母與子女是直系血親。'},
+   {q:'第 2 步：父親與母親是配偶嗎？',o:['是','不是'],a:'是',hint:'兩人因婚姻互為配偶。'},
+   {q:'第 3 步：外公是母親的血親，因此對爺爺形成「血親的配偶的血親」。這在課本列出的三類姻親中嗎？',o:['有列入','沒有列入'],a:'沒有列入',hint:'課本特別以親家公為例，說明這不屬姻親。'}],result:'不屬於課本所稱的姻親',why:'課本指出「血親的配偶的血親」不在民法所列三類姻親中，因此親家公彼此不屬姻親。'}
+];
+let trainerIndex=0,trainerSolved=0,trainerStep=0,trainerItem=null;
+function renderTrainer(){
+ trainerItem=trainerBank[trainerIndex%trainerBank.length];trainerStep=0;
+ $('#trainerCount').textContent='第 '+(trainerIndex+1)+' 題';$('#trainerSolved').textContent='完成 '+trainerSolved+' 題';
+ $('#trainerQuestion').textContent=trainerItem.q;$('#trainerQuestionSticky').textContent=trainerItem.q;$('#trainerPath').innerHTML=trainerItem.path.map((x,i)=>`<span class="path-chip">${i? '→ ':''}${x}</span>`).join('');
+ $('#trainerSteps').innerHTML='';$('#trainerResult').className='trainer-result hidden';
+ trainerItem.steps.forEach((s,i)=>{const box=document.createElement('div');box.className='trainer-step'+(i?' locked':'');box.dataset.step=i;box.innerHTML=`<h4>${s.q}</h4><div class="step-options"></div><div class="trainer-hint">${i===0?'先做這一步。':'完成前一步後才能作答。'}</div>`;const opts=box.querySelector('.step-options');s.o.forEach(opt=>{const b=document.createElement('button');b.className='step-option';b.textContent=opt;b.disabled=i!==0;b.onclick=()=>answerTrainer(i,opt,b,box);opts.appendChild(b)});$('#trainerSteps').appendChild(box)});
+}
+function answerTrainer(i,opt,btn,box){if(i!==trainerStep)return;const s=trainerItem.steps[i],hint=box.querySelector('.trainer-hint');if(opt!==s.a){addMistake('判斷訓練',trainerItem);btn.classList.add('no');setTimeout(()=>btn.classList.remove('no'),450);hint.innerHTML='❌ '+s.hint+' 再想一次。';return;}box.querySelectorAll('.step-option').forEach(b=>b.disabled=true);btn.classList.add('ok');box.classList.add('done');hint.innerHTML='✅ '+s.hint;trainerStep++;if(trainerStep<trainerItem.steps.length){const next=$(`.trainer-step[data-step="${trainerStep}"]`);next.classList.remove('locked');next.querySelectorAll('.step-option').forEach(b=>b.disabled=false);next.querySelector('.trainer-hint').textContent='接著判斷這一步。';}else{trainerSolved++;$('#trainerSolved').textContent='完成 '+trainerSolved+' 題';const r=$('#trainerResult');r.className='trainer-result';r.innerHTML=`🎯 最後判斷：<b>${trainerItem.result}</b><br>${trainerItem.why}`;}}
+$('#nextTrainer').onclick=()=>{trainerIndex=(trainerIndex+1)%trainerBank.length;renderTrainer()};$('#restartTrainer').onclick=()=>{trainerIndex=0;trainerSolved=0;renderTrainer()};renderTrainer();
+
+const quizBank=[
+ {type:'親屬',q:'下列哪一組最符合「直系血親」？',a:'祖父母與孫子女',o:['兄弟姊妹','祖父母與孫子女','姑姑與姪女','舅舅與外甥女'],why:'直系血親彼此間具有出生的直接關係。'},
+ {type:'親屬',q:'兄弟姊妹為什麼屬於旁系血親？',a:'有相同血緣，但彼此沒有出生的直接關係',o:['因為彼此沒有血緣','因為是婚姻形成','有相同血緣，但彼此沒有出生的直接關係','因為一定不同住'],why:'這就是課本對旁系血親的定義。'},
+ {type:'親屬',q:'下列何者是「法定血親」的課本例子？',a:'養父母與養子女',o:['夫妻','養父母與養子女','姊妹的丈夫','兄弟姊妹'],why:'法定血親又稱擬制血親，由法律程序建立。'},
+ {type:'姻親',q:'「叔叔的妻子」和小琪的關係屬於哪一類姻親？',a:'血親的配偶',o:['血親的配偶','配偶的血親','配偶的血親的配偶','不是親屬'],why:'叔叔是小琪的血親，叔叔的妻子就是「血親的配偶」。'},
+ {type:'姻親',q:'課本中，「配偶的父母」屬於哪一類？',a:'配偶的血親',o:['血親的配偶','配偶的血親','配偶的血親的配偶','旁系血親'],why:'這是課本列出的第二類姻親。'},
+ {type:'姻親',q:'爺爺與外公互稱「親家公」，依課本是否屬姻親？',a:'不是',o:['是','不是'],why:'課本指出此關係屬血親的配偶的血親，不在民法規定的三類姻親內。'},
+ {type:'家庭型態',q:'「夫妻＋未婚子女」是判斷哪種基本家庭型態的關鍵？',a:'小家庭',o:['小家庭','折衷家庭','大家庭','重組家庭'],why:'小家庭又稱核心家庭。'},
+ {type:'家庭型態',q:'「小家庭成員＋直系尊親屬，常見三代同堂」是哪一種？',a:'折衷家庭',o:['小家庭','折衷家庭','大家庭','隔代教養家庭'],why:'折衷家庭又稱主幹家庭。'},
+ {type:'家庭型態',q:'「數個具血緣關係的小家庭所組成」是哪一種？',a:'大家庭',o:['小家庭','折衷家庭','大家庭','兩地家庭'],why:'大家庭又稱擴展家庭。'},
+ {type:'多樣家庭',q:'DINK（Double Income No Kids）在課本中稱為？',a:'頂客家庭',o:['頂客家庭','兩地家庭','單親家庭','重組家庭'],why:'課本定義為雙薪且沒有子女的夫妻所組成。'},
+ {type:'多樣家庭',q:'「父母因工作無法親自照顧孩子，由祖父母照顧孫子女」是？',a:'隔代教養家庭',o:['折衷家庭','隔代教養家庭','單親家庭','大家庭'],why:'關鍵在照顧者主要由祖父母承擔。'},
+ {type:'多樣家庭',q:'「夫或妻為外籍人士所組成」是？',a:'跨國婚姻家庭',o:['兩地家庭','跨國婚姻家庭','重組家庭','頂客家庭'],why:'課本亦稱為新住民家庭。'}
+];
+let score=0,answered=0,streak=0,current=null,locked=false,qNo=0;
+function updateStats(){ $('#score').textContent=score;$('#answered').textContent=answered;$('#streak').textContent=streak+' 🔥';$('#scoreBar').style.width=(answered?score/answered*100:0)+'%';}
+function nextQuestion(){locked=false;qNo++;current=quizBank[Math.floor(Math.random()*quizBank.length)];$('#qCount').textContent='第 '+qNo+' 題';$('#qType').textContent=current.type;$('#quizTreeTools').style.display=(current.type==='家庭型態'||current.type==='多樣家庭')?'none':'flex';$('#question').textContent=current.q;$('#options').innerHTML='';const f=$('#quizFeedback');f.className='feedback hidden';shuffle(current.o).forEach(c=>{const b=document.createElement('button');b.className='option';b.textContent=c;b.onclick=()=>answerQuiz(b,c);$('#options').appendChild(b)});}
+function answerQuiz(btn,c){if(locked)return;locked=true;answered++;const f=$('#quizFeedback');f.className='feedback';$$('#options .option').forEach(b=>{b.disabled=true;if(b.textContent===current.a)b.classList.add('correct')});if(c===current.a){score++;streak++;f.classList.add('good');f.innerHTML=`✅ <b>答對！</b> ${current.why}`}else{streak=0;addMistake('隨機測驗',current);btn.classList.add('wrong');f.classList.add('bad');f.innerHTML=`❌ 正確答案是 <b>${current.a}</b>。<br>${current.why}`}updateStats();}
+$('#nextQ').onclick=nextQuestion;$('#restartQ').onclick=()=>{score=answered=streak=qNo=0;updateStats();nextQuestion()};nextQuestion();
+// 錯題複習
+let mrItems=[],mrIndex=0,mrLocked=false;
+function openMistakeReview(){
+ mrItems=mistakeArray(); if(!mrItems.length){alert('目前沒有錯題可以複習。');return;} mrIndex=0;
+ $('#mistakeList').classList.add('hidden');$('#mistakeReviewBox').classList.remove('hidden');renderMistakeReview();
+}
+function renderMistakeReview(){
+ if(!mrItems.length)return; const item=mrItems[mrIndex%mrItems.length];mrLocked=false;
+ $('#mrCount').textContent=`錯題 ${mrIndex+1} / ${mrItems.length}`;$('#mrWrongCount').textContent=`曾錯 ${item.count} 次`;$('#mrSource').textContent=item.source;$('#mrQuestion').textContent=item.q;
+ const opts=$('#mrOptions');opts.innerHTML='';const f=$('#mrFeedback');f.className='feedback hidden';
+ let choices=item.o&&item.o.length?item.o:[item.a,'再想一次']; if(!choices.includes(item.a))choices=[item.a,...choices];
+ shuffle([...new Set(choices)]).forEach(c=>{const b=document.createElement('button');b.className='option';b.textContent=c;b.onclick=()=>{if(mrLocked)return;mrLocked=true;opts.querySelectorAll('.option').forEach(x=>{x.disabled=true;if(x.textContent===item.a)x.classList.add('correct')});f.className='feedback';if(c===item.a){f.classList.add('good');f.innerHTML=`✅ <b>答對！</b><br>${item.why||''}`}else{b.classList.add('wrong');f.classList.add('bad');f.innerHTML=`❌ 正確答案是 <b>${item.a}</b>。<br>${item.why||''}`}};opts.appendChild(b)});
+}
+$('#startMistakeReview').onclick=openMistakeReview;$('#mrNext').onclick=()=>{if(!mrItems.length)return;mrIndex=(mrIndex+1)%mrItems.length;renderMistakeReview()};$('#mrBack').onclick=()=>{$('#mistakeReviewBox').classList.add('hidden');$('#mistakeList').classList.remove('hidden');updateMistakeUI()};
+$('#clearMistakes').onclick=()=>{if(confirm('確定清空本次所有錯題紀錄嗎？')){mistakes={};sessionStorage.removeItem('family-study-mistakes');$('#mistakeReviewBox').classList.add('hidden');$('#mistakeList').classList.remove('hidden');updateMistakeUI()}};
+updateMistakeUI();
+$('#resetBtn').onclick=()=>{if(confirm('要重設本工具的學習狀態、錯題紀錄與深淺色設定嗎？')){localStorage.removeItem('family-study-theme');sessionStorage.removeItem('family-study-mistakes');location.reload()}};
+</script>
+</body>
+</html>
